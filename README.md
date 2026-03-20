@@ -33,9 +33,10 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
     1. `pip freeze > requirements.txt`
 1. Create a new file: `.env`
 1. Edit the file to contain:
-    > API_KEY=1234567890abcdef
-    </br>
-    > BASE_URL=https://api.example.com
+   ```
+   API_KEY=1234567890abcdef
+   BASE_URL=https://api.example.com
+   ```
     1. These will be used by [/conftest.py](/conftest.py)
 
 ## Update Installed Packages
