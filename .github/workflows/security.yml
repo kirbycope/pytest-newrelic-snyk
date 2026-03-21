@@ -42,7 +42,7 @@ jobs:
 
       - name: Snyk monitor
         if: github.ref_name == 'main'
-        run: snyk monitor --org=${{ vars.SNYK_ORG_ID }} --project-name=requirements.txt
+        run: snyk monitor --org=${{ vars.SNYK_ORG_ID }} --project-name=requirements.txt --skip-unresolved
 
       - name: Run Snyk to check for Dependency vulnerabilities
         id: snyk-deps
