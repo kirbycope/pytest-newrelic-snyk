@@ -1,3 +1,5 @@
+![New Relic Dashboard in TV Mode](/docs/newrelic_dashboard_tv_mode.png)
+
 # pytest-newrelic-snyk
 Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
 
@@ -98,23 +100,6 @@ Note: This also requires `API_KEY` and `BASE_URL` but those are assumed to be al
 1. Name the dashboard and then select "Create"
 1. Select the dashboard from the table
 
-## [One-time] Snyk GitHub Action Setup
-1. Navigate to https://app.snyk.io/org/kirbycope/manage/snyk-code and verify "Enable Snyk Code" is enabled
-1. Navigate to https://app.snyk.io/account/personal-access-tokens
-1. Enter the Name: `PAT for GitHub Actions`
-1. For Expiry, select "6 months"
-    - Enterprise users should use a Service Account API Token
-1. Select the "Generate new token" button
-    1. Copy the Personal Access Token
-    1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/secrets/actions
-    1. Select the "New repository secret" button
-    1. Enter the name `SNYK_TOKEN` and the PAT value, then select the "Add secret" button
-1. Navigate to https://app.snyk.io/org/kirbycope/manage/settings
-    1. Copy the Organization ID
-    1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/variables/actions
-    1. Select the "New repository variable" button
-    1. Enter the name `SNYK_ORG_ID` and the Organization ID value, then select the "Add variable" button 
-
 ### Create the Column Header
 1. Select the "+ Add widget" button
 1. Select the "Add text, images, links, or diagrams" button
@@ -156,3 +141,35 @@ Note: This also requires `API_KEY` and `BASE_URL` but those are assumed to be al
     1. Open in a new tab: "true"
 1. Select the "Apply changes" button
 1. Use the ellipsis ("...") button to duplicate and edit additional widgets
+
+## [One-time] Snyk GitHub Action Setup
+1. Navigate to https://app.snyk.io/org/kirbycope/manage/snyk-code and verify "Enable Snyk Code" is enabled
+1. Navigate to https://app.snyk.io/account/personal-access-tokens
+1. Enter the Name: `PAT for GitHub Actions`
+1. For Expiry, select "6 months"
+    - Enterprise users should use a Service Account API Token
+1. Select the "Generate new token" button
+    1. Copy the Personal Access Token
+    1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/secrets/actions
+    1. Select the "New repository secret" button
+    1. Enter the name `SNYK_TOKEN` and the PAT value, then select the "Add secret" button
+1. Navigate to https://app.snyk.io/org/kirbycope/manage/settings
+    1. Copy the Organization ID
+    1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/variables/actions
+    1. Select the "New repository variable" button
+    1. Enter the name `SNYK_ORG_ID` and the Organization ID value, then select the "Add variable" button
+
+## [One-time] GitHub Branch Protection
+Purpose: Only allows code that has passed the Snyk Security Scan to be merged into the default (`main`) branch.
+1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/rules
+1. Select the "New Ruleset" button and then select the "New branch ruleset" option
+1. Name the Ruleset: `main-branch-protection`
+1. Set the "Enforcement status" to "Active"
+1. Select the "+ Add bypass" button
+1. Check the box for "Repository admin"
+    - This allows the admin to push changes even if tests fail on an as needed basis and with traceability
+1. Select the "Add target" button and then select the "Include default branch" option
+1. Select the "Require status checks to pass" checkbox
+1. Select the "+Add checks" button and type `Dep` into the search field
+1. Select the "Dependency and Code" suggestion
+1. Select the "Create" button
