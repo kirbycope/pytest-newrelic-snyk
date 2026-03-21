@@ -9,7 +9,7 @@ on:
     - cron: '0 0 * * *' # Runs every day at midnight
   workflow_dispatch:
 
-job:
+jobs:
 
   security:
 
