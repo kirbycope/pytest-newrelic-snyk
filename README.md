@@ -50,6 +50,14 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
 1. Enter the name `BASE_URL` and its value (see `.env` above), then select the "Add variable" button
     - While not a secret, this value changes based on the Environment under test
 
+## [One-time] NewRelic GitHub Action Setup
+1. Navigate to https://one.newrelic.com/admin-portal/api-keys/home
+1. Locate the "INGEST - LICENSE", select the  ellipsis ("..."), and then select "Copy key ID"
+1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/secrets/actions
+    - Optionally, you could save this as an organization secret if available for your account
+1. Select the "New repository secret" button
+1. Enter the name `NEW_RELIC_LICENSE_KEY` and its value (the "key ID" above), then select the "Add secret" button
+
 ## Update Installed Packages
 1. Open [/requirements.txt](/requirements.txt)
 1. Find and replace: `==` with `>=`
