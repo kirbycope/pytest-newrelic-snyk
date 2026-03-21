@@ -39,6 +39,17 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
    ```
     1. These will be used by [/conftest.py](/conftest.py)
 
+## [One-time] GitHub Environment Setup
+1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/environments
+1. Select the "New environment" button
+1. Enter the name `Test` and then select the "Configure environment button"
+1. Select the "Add environment secret" button
+1. Enter the name `API_KEY` and its value (see `.env` above), then select the "Add secret" button
+    - The API_Key is a secret. Keep it hidden, keep it safe!
+1. Select the "Add environment variable" button
+1. Enter the name `BASE_URL` and its value (see `.env` above), then select the "Add variable" button
+    - While not a secret, this value changes based on the Environment under test
+
 ## Update Installed Packages
 1. Open [/requirements.txt](/requirements.txt)
 1. Find and replace: `==` with `>=`
