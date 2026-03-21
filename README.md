@@ -52,7 +52,12 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
 
 ## [One-time] NewRelic GitHub Action Setup
 1. Navigate to https://one.newrelic.com/admin-portal/api-keys/home
-1. Locate the "INGEST - LICENSE", select the  ellipsis ("..."), and then select "Copy key ID"
+1. Select the "Create a key" button
+1. Change the "Key type" to "Ingest - License"
+1. Name the key: `License Key for GitHub Actions`
+1. Enter the Notes: `Used to upload GHA results to NewRelic`
+1. Select the "Create a key" button
+1. Select the "Copy key" button
 1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/secrets/actions
     - Optionally, you could save this as an organization secret if available for your account
 1. Select the "New repository secret" button
