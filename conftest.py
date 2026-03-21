@@ -4,6 +4,7 @@ import pytest
 from dotenv import load_dotenv
 load_dotenv()
 
+
 @pytest.fixture(scope="session")
 def config(request: pytest.FixtureRequest) -> dict:
     """

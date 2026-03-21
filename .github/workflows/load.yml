@@ -1,0 +1,84 @@
+name: Load Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run the tests against'
+        required: true
+        type: choice
+        options:
+          - 'Test'
+        default: 'Test'
+      users:
+        description: 'The number of concurrent users to simulate'
+        default: '50'
+        required: true
+      rate:
+        description: 'The rate per second in which users are spawned'
+        default: '10'
+        required: true
+      duration:
+        description: 'The duration of the test (e.g. 5m, 1h)'
+        default: '5m'
+        required: true
+      max_fail_ratio:
+        description: 'The maximum acceptable failure ratio (e.g. 0.01 for 1%)'
+        default: '0.01'
+        required: true
+      max_avg_response_time:
+        description: 'The maximum acceptable average response time in milliseconds'
+        default: '2000'
+        required: true
+      max_response_time_percentile:
+        description: 'The maximum acceptable response time at the 95th percentile in milliseconds'
+        default: '5000'
+        required: true
+
+
+jobs:
+
+  load:
+
+    name: Locust
+
+    runs-on: ubuntu-latest
+
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+
+      - name: Checkout main repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          BASE_URL: ${{ vars.BASE_URL }}
+          MAX_FAIL_RATIO: ${{ inputs.max_fail_ratio }}
+          MAX_AVG_RESPONSE_TIME: ${{ inputs.max_avg_response_time }}
+          MAX_RESPONSE_TIME_PERCENTILE: ${{ inputs.max_response_time_percentile }}
+        run: locust --headless -u ${{ inputs.users }} -r ${{ inputs.rate }} -t ${{ inputs.duration }} --csv=locust_results --html=locust_report.html
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: locust_results
+          path: |
+            locust_report.html
+            locust_results_exceptions.csv
+            locust_results_failures.csv
+            locust_results_stats_history.csv
+            locust_results_stats.csv
+          retention-days: 30

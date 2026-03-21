@@ -3,8 +3,9 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
 
 ## Technologies Used
 - [PyTest](https://docs.pytest.org/en/stable/) The PyTest framework makes it easy to write small, readable tests, and can scale to support complex functional testing for applications and libraries.
-- [NewRelic](https://newrelic.com/) Intelligent Observability resolves issues at scale—before they impact your bottom line.
-- [Snyk](https://snyk.io/) A new autonomous defense architecture designed for an era where code creation has accelerated beyond human capacity. Weave an invisible, intelligent layer of defense into every creation.
+- [Locust](https://locust.io/) An open source load testing tool. Define user behaviour with Python code, and swarm your system with millions of simultaneous users.
+- [NewRelic](https://newrelic.com/) New Relic is an AI-powered observability platform that correlates your telemetry across your entire stack, so you can isolate the root cause and reduce MTTR.
+- [Snyk](https://snyk.io/) Snyk is the AI Security Fabric. Secure at inception with continuous, autonomous defense for AI-generated code and AI-native apps.
 
 ## Project Setup
 1. Clone _this_ repo: `git clone https://github.com/kirbycope/pytest-newrelic-snyk.git`
@@ -34,10 +35,32 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
 1. Create a new file: `.env`
 1. Edit the file to contain:
    ```
-   API_KEY=1234567890abcdef
-   BASE_URL=https://api.example.com
+   # Test Configuration
+    API_KEY=1234567890abcdef
+    BASE_URL=https://api.example.com
+
+    # Locust Load Test Configuration
+    MAX_FAIL_RATIO=0.01
+    MAX_AVG_RESPONSE_TIME=500
+    MAX_RESPONSE_TIME_PERCENTILE=2000
+
+    # New Relic Configuration
+    NEW_RELIC_LICENSE_KEY=
+
+    # Snyk Configuration
+    SNYK_TOKEN=
+    SNYK_ORG_ID=
    ```
     1. These will be used by [/conftest.py](/conftest.py)
+
+## [As-needed] Update Installed Packages
+1. Open [/requirements.txt](/requirements.txt)
+1. Find and replace: `==` with `>=`
+    - "==" is used to lock the version so that CI does not use untested versions
+1. With `(.venv)` active, update the packages: `pip install --upgrade -r requirements.txt`
+1. Then lock the versions again: `pip freeze > requirements.txt`
+
+----
 
 ## [One-time] GitHub Environment Setup
 1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/environments
@@ -49,6 +72,17 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
 1. Select the "Add environment variable" button
 1. Enter the name `BASE_URL` and its value (see `.env` above), then select the "Add variable" button
     - While not a secret, this value changes based on the Environment under test
+
+# [One-time] Locust GitHub Action Setup
+1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/variables/actions
+    - Optionally, you could save this as an organization variable if available for your account
+1. Select the "New repository variable" button
+1. Enter the name `MAX_FAIL_RATIO` and the `0.01`, then select the "Add variable" button
+1. Select the "New repository variable" button
+1. Enter the name `MAX_AVG_RESPONSE_TIME` and the `500`, then select the "Add variable" button
+1. Select the "New repository variable" button
+1. Enter the name `MAX_RESPONSE_TIME_PERCENTILE` and the `2000`, then select the "Add variable" button
+    - This is the "timeout" for P95 responses
 
 ## [One-time] NewRelic GitHub Action Setup
 1. Navigate to https://one.newrelic.com/admin-portal/api-keys/home
@@ -71,6 +105,7 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
 1. Select the dashboard from the table
 
 ## [One-time] Snyk GitHub Action Setup
+1. Navigate to https://app.snyk.io/org/kirbycope/manage/snyk-code and verify "Enable Snyk Code" is enabled
 1. Navigate to https://app.snyk.io/account/personal-access-tokens
 1. Enter the Name: `PAT for GitHub Actions`
 1. For Expiry, select "6 months"
@@ -85,7 +120,6 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
     1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/variables/actions
     1. Select the "New repository variable" button
     1. Enter the name `SNYK_ORG_ID` and the Organization ID value, then select the "Add variable" button 
-
 
 ### Create the Column Header
 1. Select the "+ Add widget" button
@@ -128,10 +162,3 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
     1. Open in a new tab: "true"
 1. Select the "Apply changes" button
 1. Use the ellipsis ("...") button to duplicate and edit additional widgets
-
-## Update Installed Packages
-1. Open [/requirements.txt](/requirements.txt)
-1. Find and replace: `==` with `>=`
-    - "==" is used to lock the version so that CI does not use untested versions
-1. With `(.venv)` active, update the packages: `pip install --upgrade -r requirements.txt`
-1. Then lock the versions again: `pip freeze > requirements.txt`
