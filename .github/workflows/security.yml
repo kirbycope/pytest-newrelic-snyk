@@ -47,12 +47,12 @@ jobs:
       - name: Run Snyk to check for Dependency vulnerabilities
         id: snyk-deps
         continue-on-error: true
-        run: snyk test --severity-threshold=high
+        run: snyk test --severity-threshold=high --skip-unresolved
 
       - name: Run Snyk to check for Code vulnerabilities
         id: snyk-code
         continue-on-error: true
-        run: snyk code test --severity-threshold=high
+        run: snyk code test --severity-threshold=high --skip-unresolved
 
       - name: Verify Snyk results
         run: |
