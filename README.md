@@ -43,15 +43,8 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
     MAX_FAIL_RATIO=0.01
     MAX_AVG_RESPONSE_TIME=500
     MAX_RESPONSE_TIME_PERCENTILE=2000
-
-    # New Relic Configuration
-    NEW_RELIC_LICENSE_KEY=
-
-    # Snyk Configuration
-    SNYK_TOKEN=
-    SNYK_ORG_ID=
    ```
-    1. These will be used by [/conftest.py](/conftest.py)
+    1. These will be used by [/conftest.py](/conftest.py) and [/locustfile.py](/locustfile.py)
 
 ## [As-needed] Update Installed Packages
 1. Open [/requirements.txt](/requirements.txt)
