@@ -1,0 +1,71 @@
+name: Snyk Security Scan
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at midnight
+  workflow_dispatch:
+
+job:
+
+  security:
+
+    name: Dependency and Code
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Set up Snyk CLI
+        uses: snyk/actions/setup@master
+
+      - name: Authenticate Snyk CLI
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk auth $SNYK_TOKEN
+
+      - name: Snyk monitor
+        if: github.ref_name == 'main'
+        run: snyk monitor --org=${{ vars.SNYK_ORG_ID }} --project-name=requirements.txt
+
+      - name: Run Snyk to check for Dependency vulnerabilities
+        id: snyk-deps
+        continue-on-error: true
+        run: snyk test --severity-threshold=high
+
+      - name: Run Snyk to check for Code vulnerabilities
+        id: snyk-code
+        continue-on-error: true
+        run: snyk code test --severity-threshold=high
+
+      - name: Verify Snyk results
+        run: |
+          failed=0
+          if [ "${{ steps.snyk-deps.outcome }}" = "failure" ]; then
+            echo "- Dependency vulnerabilities check failed."
+            failed=1
+          fi
+          if [ "${{ steps.snyk-code.outcome }}" = "failure" ]; then
+            echo "- Code vulnerabilities check failed."
+            failed=1
+          fi
+          if [ $failed -eq 1 ]; then
+            echo "Snyk check(s) failed."
+            exit 1
+          fi

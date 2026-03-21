@@ -61,7 +61,73 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
 1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/secrets/actions
     - Optionally, you could save this as an organization secret if available for your account
 1. Select the "New repository secret" button
-1. Enter the name `NEW_RELIC_LICENSE_KEY` and its value (the "key ID" above), then select the "Add secret" button
+1. Enter the name `NEW_RELIC_LICENSE_KEY` and the key ID, then select the "Add secret" button
+
+## [One-time] NewRelic Dashboard Setup
+1. Navigate to https://one.newrelic.com/dashboards
+1. Select the "Create a dashboard" button
+1. Select the "Create a new dashboard" button
+1. Name the dashboard and then select "Create"
+1. Select the dashboard from the table
+
+## [One-time] Snyk GitHub Action Setup
+1. Navigate to https://app.snyk.io/account/personal-access-tokens
+1. Enter the Name: `PAT for GitHub Actions`
+1. For Expiry, select "6 months"
+    - Enterprise users should use a Service Account API Token
+1. Select the "Generate new token" button
+    1. Copy the Personal Access Token
+    1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/secrets/actions
+    1. Select the "New repository secret" button
+    1. Enter the name `SNYK_TOKEN` and the PAT value, then select the "Add secret" button
+1. Navigate to https://app.snyk.io/org/kirbycope/manage/settings
+    1. Copy the Organization ID
+    1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/variables/actions
+    1. Select the "New repository variable" button
+    1. Enter the name `SNYK_ORG_ID` and the Organization ID value, then select the "Add variable" button 
+
+
+### Create the Column Header
+1. Select the "+ Add widget" button
+1. Select the "Add text, images, links, or diagrams" button
+1. Edit the text to: `# ![Alt text](https://docs.pytest.org/en/stable/_static/favicon.png) PyTest Integration Tests` and then select the "Save" button
+1. Use the ellipsis ("...") button to duplicate and edit additional headers
+
+### Create a Pass/Fail Widget
+1. Select the "+ Add widget" button
+1. Select the "Add a chart" button
+1. Paste in the following:
+    ```
+    FROM Span
+    SELECT latest(conclusion) = 'success' as 'Success', latest(timestamp)
+    WHERE entity.name = 'kirbycope/pytest-newrelic-snyk'
+    AND name = 'PyTest'
+    SINCE last month
+    ```
+1. Select the "Run" button
+1. Under "Basic Information":
+    1. Set "Name": `pytest-newrelic-snyk Integration Tests`
+    1. Set "URL": `https://github.com/kirbycope/pytest-newrelic-snyk/actions/workflows/integration.yml`
+    1. Set "Description": `PyTest`
+1. Under "Thresholds":
+    1. Add: "From": `0`, "To": `0`, and "Severity level": "Critical"
+    1. Add: "From": `1`, "To": `1`, and "Severity level": "Good"
+1. Under "Data Format"
+    1. Attribute: "timestamp"
+    1. Type: "Date / time"
+    1. Format: "Select a format"
+1. Dashboard options:
+    1. Ignore time picker: "true"
+1. Billboard settings:
+    1. Display mode: "Value and label"
+    1. Alignment: "Stacked (default)"
+    1. Columns amount: `1`
+1. (Optional) Add link:
+    1. Title: `See results on GitHub`
+    1. Url: `https://github.com/kirbycope/pytest-newrelic-snyk/actions/workflows/integration.yml`
+    1. Open in a new tab: "true"
+1. Select the "Apply changes" button
+1. Use the ellipsis ("...") button to duplicate and edit additional widgets
 
 ## Update Installed Packages
 1. Open [/requirements.txt](/requirements.txt)
