@@ -37,7 +37,7 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
    ```
    # Test Configuration
     API_KEY=1234567890abcdef
-    BASE_URL=https://api.example.com
+    BASE_URL=https://jsonplaceholder.typicode.com
 
     # Locust Load Test Configuration
     MAX_FAIL_RATIO=0.01
@@ -67,6 +67,7 @@ Sample Integration test using PyTest, logged by NewRelic, and secured by Snyk.
     - While not a secret, this value changes based on the Environment under test
 
 # [One-time] Locust GitHub Action Setup
+Note: This also requires `API_KEY` and `BASE_URL` but those are assumed to be already setup (see above).
 1. Navigate to https://github.com/kirbycope/pytest-newrelic-snyk/settings/variables/actions
     - Optionally, you could save this as an organization variable if available for your account
 1. Select the "New repository variable" button

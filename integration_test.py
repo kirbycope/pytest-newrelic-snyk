@@ -15,7 +15,12 @@ def test_000(config: dict):
 def test_001(config: dict):
     """ Test to verify that a GET request to a valid endpoint returns a 200 response. """
     logging.info(f"Config: {config}")
-    response = requests.get("https://jsonplaceholder.typicode.com/posts/1")
+    response = requests.get(
+        f"{config['base_url']}/posts/1",
+        headers={
+            "x-api-key": config['api_key'],
+        }
+    )
     assert response.status_code == 200
     logging.info("Finished test_001")
 
@@ -24,6 +29,11 @@ def test_001(config: dict):
 def test_002(config: dict):
     """ Test to verify that a GET request to an invalid endpoint returns a 404 response. """
     logging.info(f"Config: {config}")
-    response = requests.get("https://jsonplaceholder.typicode.com/negative-endpoint")
+    response = requests.get(
+        f"{config['base_url']}/negative-endpoint",
+        headers={
+            "x-api-key": config['api_key'],
+        }
+    )
     assert response.status_code == 404
     logging.info("Finished test_002")
